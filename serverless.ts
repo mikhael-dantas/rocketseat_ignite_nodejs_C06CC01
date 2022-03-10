@@ -24,7 +24,19 @@ const serverlessConfiguration: AWS = {
         {
           http: {
             method: 'post',
-            path: '/',
+            path: '/todos',
+            cors: true
+          }
+        }
+      ]
+    },
+    CreateUser: {
+      handler: 'src/functions/createUser.handler',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: '/users',
             cors: true
           }
         }
@@ -58,6 +70,22 @@ const serverlessConfiguration: AWS = {
         Type: 'AWS::DynamoDB::Table',
         Properties: {
           TableName: 'todos',
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5,
+          },
+          AttributeDefinitions: [
+            { AttributeName: 'id', AttributeType: 'S' },
+          ],
+          KeySchema: [
+            { AttributeName: 'id', KeyType: 'HASH' },
+          ],
+        },
+      },
+      users: {
+        Type: 'AWS::DynamoDB::Table',
+        Properties: {
+          TableName: 'users',
           ProvisionedThroughput: {
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5,

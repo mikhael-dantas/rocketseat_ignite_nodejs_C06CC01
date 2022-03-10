@@ -18,7 +18,27 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: {
-    // create todo with path parameter
+    ListTodos: {
+      handler: 'src/functions/listTodos.handler',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'todos/{user_id}',
+            cors: true,
+            request: {
+              parameters: {
+                paths: {
+                  user_id: {
+                    required: true,
+                  },
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     CreateTodo: {
       handler: 'src/functions/createTodo.handler',
       events: [

@@ -92,6 +92,27 @@ const serverlessConfiguration: AWS = {
           }
         }
       ]
+    },
+    DeleteTodo: {
+      handler: 'src/functions/deleteTodo.handler',
+      events: [
+        {
+          http: {
+            method: 'delete',
+            path: '/todos/{todo_id}',
+            cors: true,
+            request: {
+              parameters: {
+                paths: {
+                  todo_id: {
+                    required: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   },
   package: { individually: true },

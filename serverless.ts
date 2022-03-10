@@ -3,7 +3,7 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 'rocketseat-ignite-nodejs-c06cc01',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-dynamodb-local','serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -18,12 +18,12 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: {
-    Hello: {
-      handler: 'src/functions/Hello.handler',
+    CreateTodo: {
+      handler: 'src/functions/createTodo.handler',
       events: [
         {
           http: {
-            method: 'get',
+            method: 'post',
             path: '/',
             cors: true
           }
@@ -43,10 +43,18 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    dynamodb: {
+      stages: ['dev', 'local'],
+      start: {
+        port: 8001,
+        inMemory: true,
+        migrate: true,
+      }
+    }
   },
   resources: {
     Resources: {
-      dbTodos: {
+      todos: {
         Type: 'AWS::DynamoDB::Table',
         Properties: {
           TableName: 'todos',

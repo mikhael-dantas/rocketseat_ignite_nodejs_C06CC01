@@ -18,23 +18,14 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: {
-    ListTodos: {
-      handler: 'src/functions/listTodos.handler',
+    CreateUser: {
+      handler: 'src/functions/createUser.handler',
       events: [
         {
           http: {
-            method: 'get',
-            path: 'todos/{user_id}',
-            cors: true,
-            request: {
-              parameters: {
-                paths: {
-                  user_id: {
-                    required: true,
-                  },
-                }
-              }
-            }
+            method: 'post',
+            path: '/users',
+            cors: true
           }
         }
       ]
@@ -60,14 +51,44 @@ const serverlessConfiguration: AWS = {
         }
       ]
     },
-    CreateUser: {
-      handler: 'src/functions/createUser.handler',
+    ListTodos: {
+      handler: 'src/functions/listTodos.handler',
       events: [
         {
           http: {
-            method: 'post',
-            path: '/users',
-            cors: true
+            method: 'get',
+            path: 'todos/{user_id}',
+            cors: true,
+            request: {
+              parameters: {
+                paths: {
+                  user_id: {
+                    required: true,
+                  },
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    ExecuteTodo: {
+      handler: 'src/functions/executeTodo.handler',
+      events: [
+        {
+          http: {
+            method: 'put',
+            path: '/todos/{todo_id}',
+            cors: true,
+            request: {
+              parameters: {
+                paths: {
+                  todo_id: {
+                    required: true
+                  }
+                }
+              }
+            }
           }
         }
       ]
